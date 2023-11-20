@@ -1,9 +1,7 @@
-import os
-from dotenv import load_dotenv
+import sys
 from pywinauto.application import Application
 import time
 import pyautogui
-# import pygetwindow as gw
 
 
 app_path = r'C:\Riot Games\Riot Client\RiotClientServices.exe'
@@ -24,13 +22,19 @@ def click_button(image_path, confidence=0.8):
         return False
 
 def main():
-    load_dotenv()
+    if len(sys.argv) !=3:
+        print("Usage: python script.py <variable>")
+        sys.exit(1)
+
+    username = sys.argv[1]
+    password = sys.argv[2]
+
+    if not (username and password):
+        print("Error: variable1 and variable2 must have values.")
+        sys.exit(1)
 
     Application(backend='uia').start(app_path)
     time.sleep(5)
-
-    username = os.getenv('LOL_MAIN_USERNAME',default="")
-    password = os.getenv('LOL_MAIN_PASSWORD',default="")
 
     pyautogui.typewrite(username)
     pyautogui.press('tab')
@@ -47,12 +51,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-# Get a list of all open windows
-# windows = gw.getAllWindows()
-
-# # Print information about each window
-# for window in windows:
-#     print(f"Title: {window.title}, Class: {window}")
